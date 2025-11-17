@@ -1,6 +1,14 @@
 <app-top-bar></app-top-bar>
 <div class="game-wrapper">
   <router-outlet></router-outlet>
+  <div class="needs">
+    <app-need needType="hunger"></app-need>
+    <app-need needType="energy"></app-need>
+  </div>
+  <app-room></app-room>
   <app-pet></app-pet>
 </div>
-<app-bottom-bar></app-bottom-bar>
+<div class="bottom-wrapper">
+  <app-bottom-bar></app-bottom-bar>
+  <app-tools></app-tools>
+</div>

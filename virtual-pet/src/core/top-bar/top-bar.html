@@ -1,7 +1,5 @@
 <div class="container">
-  <div>Opcje</div>
-  <div>{{ time | date : 'hh:mm:ss a' }}</div>
-
-  <br />
-  <div><button (click)="closeApp()">x</button></div>
+  <div class="options">Opcje</div>
+  <div class="time">{{ time | date: 'hh:mm:ss a' }}</div>
+  <div><button class="exit" (click)="closeApp()">x</button></div>
 </div>

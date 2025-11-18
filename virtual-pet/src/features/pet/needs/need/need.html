@@ -1,3 +1,12 @@
 <div class="slidecontainer">
-  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  <input
+    type="range"
+    min="0"
+    max="100"
+    [value]="currentNeedLevel()"
+    disabled
+    class="slider"
+    id="myRange"
+    readonly
+  />
 </div>

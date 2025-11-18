@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { RoomService } from '../../rooms/rooms/room-service';
-import { ToolService } from '../tool-service';
+import { RoomService } from '../../../services/room-service';
+import { ToolService } from '../../../services/tool-service';
 
 @Component({
   selector: 'app-tools',
@@ -18,6 +18,6 @@ export class Tools {
 
   useCurrentTool() {
     const tool = this.currentToolName();
-    console.log(`Używam narzędzia: ${tool} w pokoju: ${this.currentRoomName()}`);
+    this.toolService.useTool(tool);
   }
 }

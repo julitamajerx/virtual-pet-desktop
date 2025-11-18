@@ -1,4 +1,5 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { PetService } from '../../../../services/pet-service';
 
 @Component({
   selector: 'app-need',
@@ -6,13 +7,14 @@ import { Component, input, OnInit } from '@angular/core';
   templateUrl: './need.html',
   styleUrl: './need.css',
 })
-export class Need implements OnInit{
+export class Need {
   public needType = input<string>();
-  ngOnInit(): void {
-    console.log(this.needType());
-  }
-  
 
-  
+  private needsService = inject(PetService);
 
+  currentNeedLevel = computed(() => {
+    const needSignal = this.needsService.getNeedLevel(this.needType()!);
+
+    return needSignal ? needSignal() : 0;
+  });
 }

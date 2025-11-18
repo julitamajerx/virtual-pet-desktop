@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { RoomService } from './rooms/room-service';
+import { RoomService } from '../../services/room-service';
 
 @Component({
   selector: 'app-room',

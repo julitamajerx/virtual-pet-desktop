@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { Rooms } from '../shared/enums/rooms-name.enum';
 
 @Injectable({ providedIn: 'root' })
 export class RoomService {
-  readonly rooms = ['kuchnia', 'sypialnia'];
   public currentRoom = signal(0);
+  public readonly rooms = Rooms;
   private router = inject(Router);
 
   setCurrentRoom(roomNumber: number) {

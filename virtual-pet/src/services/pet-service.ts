@@ -6,11 +6,17 @@ import { NeedState } from '../shared/interfeces/need-state.interface';
   providedIn: 'root',
 })
 export class PetService {
+  public currentAnimation = signal<'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | null>(
+    'idle'
+  );
+
   public isLightOn = signal(true);
   private needs: Record<string, WritableSignal<number>> = NeedsMap;
   private decayIntervals: Record<string, number> = {};
   private readonly config: Record<string, { rateMs: number; amount: number }> = NeedConfig;
   private satisfactionIntervals: Record<string, number> = {};
+  private needZeroTriggered: Record<string, boolean> = {};
+
   constructor() {
     this.startAllDecay();
   }
@@ -22,7 +28,14 @@ export class PetService {
     const newLevel = Math.max(0, needSignal() - this.config[needName].amount);
     needSignal.set(newLevel);
 
-    if (newLevel === 0 && this.decayIntervals[needName]) {
+    if (newLevel === 0 && !this.needZeroTriggered[needName]) {
+      this.needZeroTriggered[needName] = true;
+      this.playAnimation('sad');
+    }
+
+    if (newLevel > 0 && this.needZeroTriggered[needName]) {
+      this.playAnimation('idle');
+      this.needZeroTriggered[needName] = false;
     }
   }
 
@@ -86,18 +99,27 @@ export class PetService {
 
   public toggleLightInteraction(): void {
     const needName = 'sleep';
+    const sleepLevel = this.needs[needName]();
 
     if (this.isLightOn()) {
-      this.satisfyNeedInTime(needName, 5, 30000);
+      if (sleepLevel < 75) {
+        this.satisfyNeedInTime(needName, 5, 30000);
+      } else {
+        this.playAnimation('angry');
+      }
     } else {
       const intervalId = this.satisfactionIntervals[needName];
-
       if (intervalId) {
         clearInterval(intervalId);
         delete this.satisfactionIntervals[needName];
       }
       this.isLightOn.set(true);
     }
+  }
+
+  public playAnimation(name: 'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry') {
+    this.currentAnimation.set(null);
+    queueMicrotask(() => this.currentAnimation.set(name));
   }
 
   ngOnDestroy() {

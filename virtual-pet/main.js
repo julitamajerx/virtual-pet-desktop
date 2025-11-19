@@ -11,9 +11,10 @@ function createWindow() {
     resizable: false,
     maximizable: false,
     minimizable: true,
+    transparent: true,
+    //backgroundColor: '#00000000',
     frame: false,
     fullscreenable: false,
-    backgroundColor: '#ffffff',
     icon: path.join(__dirname, 'dist/virtual-pet/browser/assets/logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

@@ -19,8 +19,6 @@ export class Need implements OnInit {
 
   currentNeedLevel = computed(() => {
     const needSignal = this.needsService.getNeedLevel(this.needType()!);
-    console.log(this.needType);
-
     return needSignal ? needSignal() : 0;
   });
 }

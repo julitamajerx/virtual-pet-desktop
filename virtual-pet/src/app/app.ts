@@ -18,4 +18,5 @@ export class App {
   private petService = inject(PetService);
   protected isLightOff = computed(() => !this.petService.isLightOn());
   protected readonly title = signal('virtual-pet');
+  protected backgroundImage = 'background.png';
 }

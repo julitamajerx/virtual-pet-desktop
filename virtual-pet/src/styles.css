@@ -1,9 +1,17 @@
-::-webkit-scrollbar {
-  display: none;
+@font-face {
+  font-family: 'TeenyTinyPixls-o2zo';
+  src: url('assets/TeenyTinyPixls-o2zo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
   margin: 0;
   padding: 0;
   background-color: black;
+  font-family: 'TeenyTinyPixls-o2zo', sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

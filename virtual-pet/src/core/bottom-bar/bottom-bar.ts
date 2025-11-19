@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './bottom-bar.html',
   styleUrl: './bottom-bar.css',
 })
-export class BottomBar {}
+export class BottomBar {
+  protected backgroundImage = 'bottombar.png';
+}

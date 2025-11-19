@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="options">Opcje</div>
-  <div class="time">{{ time | date: 'hh:mm:ss a' }}</div>
-  <div><button class="exit" (click)="closeApp()">x</button></div>
+<div class="container" [style.backgroundImage]="'url(' + backgroundImage + ')'">
+  <div class="options"></div>
+  <div class="time">{{ time | date: 'hh:mm:ss' }}</div>
+  <div><button class="exit" (click)="closeApp()" [style.backgroundImage]="'url(' + exitImage + ')'"></button></div>
 </div>

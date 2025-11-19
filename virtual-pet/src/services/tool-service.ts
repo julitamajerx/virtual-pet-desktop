@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { PetService } from './pet-service';
 import { ToolMap } from '../shared/types/tools-map.type';
+import { ToolsNames } from '../shared/enums/tools-name.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +16,16 @@ export class ToolService {
 
   useTool(toolName: string) {
     switch (toolName) {
-      case 'food':
+      case ToolsNames.food:
         this.petService.satisfyNeed('hunger', 25);
         break;
 
-      case 'light':
+      case ToolsNames.light:
         this.petService.toggleLightInteraction();
+        break;
+
+      case ToolsNames.game:
+        this.petService.satisfyNeed('fun', 50);
         break;
 
       default:

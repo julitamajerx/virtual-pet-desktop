@@ -8,7 +8,7 @@
 
 app-pet {
   position: absolute;
-  bottom: 40px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -30,14 +30,15 @@ app-bottom {
 app-tools {
   position: absolute;
   width: 100%;
-  bottom: 25px;
+  bottom: 15px;
   z-index: 13;
 }
 
 .needs {
   position: absolute;
-  bottom: 175px;
+  bottom: 150px;
   z-index: 13;
+  margin-left: 5px;
 }
 
 .dark-overlay {

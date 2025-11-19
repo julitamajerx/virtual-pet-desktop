@@ -16,11 +16,15 @@ export class RoomService {
       case 1:
         this.router.navigate([this.rooms[1]]);
         break;
+      case 2:
+        this.router.navigate([this.rooms[2]]);
+        break;
     }
   }
 
   changeCurrentRoom() {
-    if (this.currentRoom() === 1) {
+    if (this.currentRoom() === 2
+  ) {
       this.currentRoom.update((value) => (value = 0));
       this.setCurrentRoom(this.currentRoom());
 

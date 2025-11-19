@@ -1,6 +1,4 @@
 <div class="container">
-  <div class="tool-test" (click)="useCurrentTool()">
-    <p>{{ currentRoomName() }}</p>
-    <p>{{ currentToolName() }}</p>
+  <div class="tool-test" (click)="useCurrentTool()" [style.backgroundImage]="'url(' + toolImage + ')'">
   </div>
 </div>

@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 import { Room } from '../features/rooms/room';
-import { Room1 } from '../features/rooms/rooms/kitchen/room1';
-import { Room2 } from '../features/rooms/rooms/room2/room2';
+import { Kitchen } from '../features/rooms/rooms/kitchen/kitchen';
+import { Bedroom } from '../features/rooms/rooms/bedroom/bedroom';
+import { Playroom } from '../features/rooms/rooms/playroom/playroom';
 
 export const routes: Routes = [
-  { path: '', component: Room1 },
-  { path: 'kitchen', component: Room1 },
-  { path: 'bedroom', component: Room2 },
+  { path: '', component: Kitchen },
+  { path: 'kitchen', component: Kitchen },
+  { path: 'bedroom', component: Bedroom },
+  { path: 'playroom', component: Playroom },
 ];

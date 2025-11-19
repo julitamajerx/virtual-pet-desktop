@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { RoomService } from '../../../services/room-service';
 import { ToolService } from '../../../services/tool-service';
+import { ToolsNames } from '../../../shared/enums/tools-name.enum';
 
 @Component({
   selector: 'app-tools',
@@ -9,12 +10,32 @@ import { ToolService } from '../../../services/tool-service';
   styleUrl: './tools.css',
 })
 export class Tools {
+  protected toolImage = '';
   private toolService = inject(ToolService);
   private roomService = inject(RoomService);
 
   currentRoomName = computed(() => this.roomService.rooms[this.roomService.currentRoom()]);
 
   currentToolName = computed(() => this.toolService.getToolForRoom(this.currentRoomName()));
+
+  constructor() {
+    effect(() => {
+      const tool = this.currentToolName();
+      switch (tool) {
+        case ToolsNames.food:
+          this.toolImage = 'food.png';
+          break;
+        case ToolsNames.light:
+          this.toolImage = 'sleep.png';
+          break;
+        case ToolsNames.game:
+          this.toolImage = 'game.png';
+          break;
+        default:
+          this.toolImage = '';
+      }
+    });
+  }
 
   useCurrentTool() {
     const tool = this.currentToolName();

@@ -9,6 +9,9 @@ import { RoomService } from '../../services/room-service';
   styleUrl: './room.css',
 })
 export class Room {
+  protected leftImage = 'nextroom.png';
+  protected rightImage = 'nextroom2.png';
+
   private roomService = inject(RoomService);
 
   public changeCurrentRoom() {

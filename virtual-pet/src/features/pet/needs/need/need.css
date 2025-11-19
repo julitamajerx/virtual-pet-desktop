@@ -1,0 +1,29 @@
+.slidecontainer {
+  width: 300px;
+  margin-bottom: 7px;
+  display: flex;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 110px;
+  height: 10px;
+  border: 1px solid black;
+  cursor: default;
+  image-rendering: pixelated;
+  background: #a0f2a0;
+  border-radius: 4px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 27px;
+  margin-left: 1px;
+  background-color: transparent;
+  background-image: url('thumb.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}

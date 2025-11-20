@@ -1,7 +1,6 @@
 .container {
   width: 100%;
   height: 70px;
-  background-image: url('/topbar.png');
 
   display: flex;
   justify-content: space-evenly;
@@ -16,7 +15,6 @@
   -webkit-app-region: no-drag;
   width: 35px;
   height: 35px;
-  background-image: url('options.png');
   background-color: transparent;
   border: none;
   cursor: pointer;

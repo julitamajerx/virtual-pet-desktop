@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 let window;
 
@@ -42,6 +43,13 @@ ipcMain.on('app:close', () => {
   if (win) {
     win.close();
   }
+});
+
+ipcMain.on('save-log', (event, logText) => {
+  const documentsPath = app.getPath('documents');
+  const logPath = path.join(documentsPath, 'game.log');
+
+  fs.appendFileSync(logPath, logText + '\n', 'utf8');
 });
 
 app.on('ready', createWindow);

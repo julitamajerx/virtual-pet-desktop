@@ -3,3 +3,11 @@ export interface ElectronWindowAPI {
     closeApp: () => void;
   };
 }
+
+declare global {
+  interface Window {
+    logger: {
+      save: (text: string) => void;
+    };
+  }
+}

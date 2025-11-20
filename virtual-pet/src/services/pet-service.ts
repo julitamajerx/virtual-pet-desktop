@@ -12,6 +12,7 @@ export class PetService {
 
   public anyNeedZero = signal(false);
   public isLightOn = signal(true);
+
   private needs: Record<string, WritableSignal<number>> = NeedsMap;
   private decayIntervals: Record<string, number> = {};
   private readonly config: Record<string, { rateMs: number; amount: number }> = NeedConfig;

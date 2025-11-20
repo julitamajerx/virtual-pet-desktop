@@ -2,8 +2,17 @@ import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core'
 import { PetService } from '../../services/pet-service';
 import { AnimationService } from '../../services/animation-service';
 
+interface AnimationConfig {
+  path: string;
+  frames: number;
+  frameDuration: number;
+  loop: boolean;
+  returnFrames?: number;
+}
+
 @Component({
   selector: 'app-pet',
+  standalone: true,
   imports: [],
   templateUrl: './pet.html',
   styleUrl: './pet.css',
@@ -11,128 +20,106 @@ import { AnimationService } from '../../services/animation-service';
 export class Pet {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  private ctx!: CanvasRenderingContext2D;
   private petService = inject(PetService);
   private animationService = inject(AnimationService);
   private canvas!: HTMLCanvasElement;
+  private readonly spriteW = 200;
+  private readonly spriteH = 200;
+
+  private readonly animationConfigs: Record<string, AnimationConfig> = {
+    idle: { path: 'assets/idle/Idle', frames: 4, frameDuration: 1000, loop: true },
+    fun: { path: 'assets/fun/Fun', frames: 1, frameDuration: 1000, loop: false, returnFrames: 2 },
+    eat: { path: 'assets/eat/Eat', frames: 4, frameDuration: 800, loop: false, returnFrames: 5 },
+    sad: { path: 'assets/sad/Sad', frames: 1, frameDuration: 800, loop: true },
+    angry: {
+      path: 'assets/angry/Angry',
+      frames: 2,
+      frameDuration: 800,
+      loop: false,
+      returnFrames: 3,
+    },
+    sleep: {
+      path: 'assets/sleep/Sleep',
+      frames: 1,
+      frameDuration: 800,
+      loop: false,
+      returnFrames: 3,
+    },
+    asleep: { path: 'assets/asleep/Asleep', frames: 0, frameDuration: 800, loop: true },
+    wakeup: {
+      path: 'assets/wakeup/Wakeup',
+      frames: 1,
+      frameDuration: 200,
+      loop: false,
+      returnFrames: 3,
+    },
+  };
 
   ngAfterViewInit() {
     this.canvas = this.canvasRef.nativeElement;
-    this.ctx = this.canvas.getContext('2d')!;
-    this.canvas.width = 200;
-    this.canvas.height = 200;
+    this.canvas.width = this.spriteW;
+    this.canvas.height = this.spriteH;
 
-    this.animationService.loadImages('assets/idle/Idle', 4);
-    this.animationService.startAnimationLoop(this.canvas, 200, 200, 2000, true);
+    const initialConfig = this.animationConfigs['idle'];
+    this.animationService
+      .loadImages(initialConfig.path, initialConfig.frames)
+      .then(() =>
+        this.animationService.startAnimationLoop(
+          this.canvas,
+          this.spriteW,
+          this.spriteH,
+          initialConfig.frameDuration,
+          initialConfig.loop
+        )
+      );
   }
 
   constructor() {
     effect(() => {
-      const light = this.petService.isLightOn();
-      const anim = this.petService.currentAnimation();
+      const animName = this.petService.currentAnimation();
+      if (!animName || !this.canvas) return;
 
-      if (!this.canvas) return;
-
-      this.animationService.stopAnimation();
-
-      switch (anim) {
-        case 'idle':
-          this.animationService
-            .loadImages('assets/idle/Idle', 4)
-            .then(() =>
-              this.animationService.startAnimationLoop(this.canvas, 200, 200, 2000, true)
-            );
-          break;
-
-        case 'fun':
-          this.animationService
-            .loadImages('assets/fun/Fun', 1)
-            .then(() =>
-              this.animationService.startAnimationLoop(this.canvas, 200, 200, 1000, false)
-            );
-
-          this.backToIdleAnimation(1000, 2);
-          break;
-
-        case 'eat':
-          this.animationService
-            .loadImages('assets/eat/Eat', 4)
-            .then(() =>
-              this.animationService.startAnimationLoop(this.canvas, 200, 200, 800, false)
-            );
-
-          this.backToIdleAnimation(800, 5);
-          break;
-        
-        case 'sad':
-          this.animationService
-            .loadImages('assets/sad/Sad', 1)
-            .then(() =>
-              this.animationService.startAnimationLoop(this.canvas, 200, 200, 800, true)
-            );
-
-          this.backToIdleAnimation(800, 2);
-          break;
-
-          case 'angry':
-          this.animationService
-            .loadImages('assets/angry/Angry', 2)
-            .then(() =>
-              this.animationService.startAnimationLoop(this.canvas, 200, 200, 800, true)
-            );
-
-          this.backToIdleAnimation(800, 3);
-          break;
-      }
-    });
-
-    effect(() => {
-      const light = this.petService.isLightOn();
-
-      if (!this.canvas) return;
-
-      if (!light) {
-        this.animationService
-          .loadImages('assets/sleep/Sleep', 1)
-          .then(() => this.animationService.startAnimationLoop(this.canvas, 200, 200, 800, false)
-        );
-
-        setTimeout(() => {
-          this.animationService
-            .loadImages('assets/asleep/Asleep', 0)
-            .then(() => this.animationService.startAnimationLoop(this.canvas, 200, 200, 800, true));
-        }, 2000);
-      } else {
-        this.backToIdleAnimation(200, 3);
-      }
+      this.handleAnimationChange(animName);
     });
   }
 
-  backToIdleAnimation(durationTime: number, frames: number) {
-    const duration = frames * durationTime;
-    setTimeout(() => {
-      this.animationService.stopAnimation();
-      this.animationService.loadImages('assets/idle/Idle', 4).then(() => {
-        this.animationService.startAnimationLoop(this.canvas, 200, 200, 2000, true);
-      });
-    }, duration);
+  private handleAnimationChange(animName: string): void {
+    const config = this.animationConfigs[animName];
+    if (!config) return;
+
+    this.animationService.stopAnimation();
+
+    this.animationService.loadImages(config.path, config.frames).then(() => {
+      this.animationService.startAnimationLoop(
+        this.canvas,
+        this.spriteW,
+        this.spriteH,
+        config.frameDuration,
+        config.loop
+      );
+
+      if (animName === 'sleep') {
+        setTimeout(() => {
+          this.handleAnimationChange('asleep');
+        }, 2000);
+      }
+
+      if (!config.loop && config.returnFrames) {
+        const durationMs = config.returnFrames * config.frameDuration;
+
+        setTimeout(() => {
+          if (animName === 'wakeup') {
+            this.petService.playAnimation('idle');
+          } else if (this.petService.isLightOn()) {
+            this.petService.playAnimation('idle');
+          }
+        }, durationMs);
+      }
+    });
   }
 
   pet() {
-    this.animationService.stopAnimation();
-
-    this.animationService.loadImages('assets/fun/Fun', 1).then(() => {
-      this.animationService.startAnimationLoop(this.canvas, 200, 200, 1000, false);
-
-      this.petService.satisfyNeed('fun', 5);
-
-      const funDuration = 3 * 1000;
-      setTimeout(() => {
-        this.animationService.stopAnimation();
-        this.animationService.loadImages('assets/idle/Idle', 4).then(() => {
-          this.animationService.startAnimationLoop(this.canvas, 200, 200, 2000, true);
-        });
-      }, funDuration);
-    });
+    this.petService.satisfyNeed('fun', 5);
+    this.petService.playAnimation('fun');
   }
 }

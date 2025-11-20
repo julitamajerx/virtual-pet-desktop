@@ -1,4 +1,4 @@
-import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
+import { effect, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { NeedConfig, NeedsMap } from '../shared/types/needs-map.type';
 import { NeedState } from '../shared/interfeces/need-state.interface';
 
@@ -6,19 +6,40 @@ import { NeedState } from '../shared/interfeces/need-state.interface';
   providedIn: 'root',
 })
 export class PetService {
-  public currentAnimation = signal<'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | null>(
-    'idle'
-  );
+  public currentAnimation = signal<
+    'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | 'asleep' | 'wakeup' | null
+  >('idle');
 
+  public anyNeedZero = signal(false);
   public isLightOn = signal(true);
   private needs: Record<string, WritableSignal<number>> = NeedsMap;
   private decayIntervals: Record<string, number> = {};
   private readonly config: Record<string, { rateMs: number; amount: number }> = NeedConfig;
   private satisfactionIntervals: Record<string, number> = {};
-  private needZeroTriggered: Record<string, boolean> = {};
 
   constructor() {
     this.startAllDecay();
+
+    effect(() => {
+      const zero = Object.values(this.needs).some((level) => level() === 0);
+      this.anyNeedZero.set(zero);
+    });
+
+    effect(() => {
+      const isZero = this.anyNeedZero();
+      const current = this.currentAnimation();
+      const isSleeping = !this.isLightOn();
+
+      if (isSleeping) return;
+
+      if (isZero && current !== 'sad') {
+        this.playAnimation('sad');
+      }
+
+      if (!isZero && current === 'sad') {
+        this.playAnimation('idle');
+      }
+    });
   }
 
   private decayNeed(needName: string): void {
@@ -28,14 +49,7 @@ export class PetService {
     const newLevel = Math.max(0, needSignal() - this.config[needName].amount);
     needSignal.set(newLevel);
 
-    if (newLevel === 0 && !this.needZeroTriggered[needName]) {
-      this.needZeroTriggered[needName] = true;
-      this.playAnimation('sad');
-    }
-
-    if (newLevel > 0 && this.needZeroTriggered[needName]) {
-      this.playAnimation('idle');
-      this.needZeroTriggered[needName] = false;
+    if (newLevel === 0 && this.decayIntervals[needName]) {
     }
   }
 
@@ -86,6 +100,7 @@ export class PetService {
 
         if (needName === 'sleep') {
           this.isLightOn.set(true);
+          this.playAnimation('wakeup');
         }
       }
     }, tickRateMs) as any;
@@ -94,6 +109,7 @@ export class PetService {
 
     if (needName === 'sleep') {
       this.isLightOn.set(false);
+      this.playAnimation('sleep');
     }
   }
 
@@ -114,17 +130,18 @@ export class PetService {
         delete this.satisfactionIntervals[needName];
       }
       this.isLightOn.set(true);
+      this.playAnimation('wakeup');
     }
   }
 
-  public playAnimation(name: 'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry') {
-    this.currentAnimation.set(null);
-    queueMicrotask(() => this.currentAnimation.set(name));
+  public playAnimation(
+    name: 'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | 'asleep' | 'wakeup'
+  ) {
+    this.currentAnimation.set(name);
   }
 
   ngOnDestroy() {
     Object.values(this.decayIntervals).forEach(clearInterval);
-
     Object.values(this.satisfactionIntervals).forEach(clearInterval);
   }
 }

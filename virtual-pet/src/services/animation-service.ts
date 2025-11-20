@@ -16,6 +16,7 @@ export class AnimationService {
 
     for (let i = 0; i <= frameCount; i++) {
       const img = new Image();
+
       img.src = `${path}(${i}).png`;
 
       const promise = new Promise<void>((resolve) => {

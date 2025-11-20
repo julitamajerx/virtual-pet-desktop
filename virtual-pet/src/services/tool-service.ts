@@ -23,7 +23,6 @@ export class ToolService {
 
       case ToolsNames.light:
         this.petService.toggleLightInteraction();
-        this.petService.playAnimation('sleep');
         break;
 
       case ToolsNames.game:

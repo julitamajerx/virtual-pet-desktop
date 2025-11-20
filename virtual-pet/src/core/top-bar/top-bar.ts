@@ -11,6 +11,7 @@ import { ElectronWindowService } from '../../services/electron-window-service';
 export class TopBar implements OnInit {
   protected backgroundImage = 'topbar.png';
   protected exitImage = 'exit.png';
+  protected optionsImage = 'options.png';
   protected time = new Date();
   private intervalId: number = 0;
   private electronWindowService = inject(ElectronWindowService);

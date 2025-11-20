@@ -21,6 +21,10 @@ export class PetService {
   private satisfactionIntervals: Record<string, number> = {};
 
   constructor() {
+    Object.keys(this.needs).forEach((needName) => {
+      this.needs[needName as NeedsNames].set(this.getInitialNeedValue(needName as NeedsNames));
+    });
+
     this.startAllDecay();
 
     effect(() => {
@@ -92,6 +96,29 @@ export class PetService {
 
   public getNeedLevel(needName: string): Signal<number> {
     return this.needs[needName];
+  }
+
+  private getTimeOfDay(): 'morning' | 'afternoon' | 'evening' | 'night' {
+    const hour = new Date().getHours();
+    if (hour >= 6 && hour < 12) return 'morning';
+    if (hour >= 12 && hour < 18) return 'afternoon';
+    if (hour >= 18 && hour < 22) return 'evening';
+    return 'night';
+  }
+
+  private getInitialNeedValue(needName: NeedsNames): number {
+    const timeOfDay = this.getTimeOfDay();
+
+    switch (needName) {
+      case NeedsNames.HUNGER:
+        return timeOfDay === 'morning' ? 80 : timeOfDay === 'afternoon' ? 50 : 100;
+      case NeedsNames.FUN:
+        return timeOfDay === 'morning' ? 90 : timeOfDay === 'evening' ? 40 : 70;
+      case NeedsNames.SLEEP:
+        return timeOfDay === 'night' ? 20 : 100;
+      default:
+        return 100;
+    }
   }
 
   public satisfyNeed(needName: string, amount: number) {

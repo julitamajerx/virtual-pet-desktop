@@ -10,17 +10,17 @@ export type NeedConfigType = Record<NeedsNames, NeedConfigItem>;
 
 export const NeedConfig: NeedConfigType = {
   [NeedsNames.HUNGER]: {
-    rateMs: 14400000,
+    rateMs: 7200000,
     amount: 1,
   },
 
   [NeedsNames.FUN]: {
-    rateMs: 14400000,
+    rateMs: 7200000,
     amount: 1,
   },
 
   [NeedsNames.SLEEP]: {
-    rateMs: 50400000,
+    rateMs: 25200000,
     amount: 1,
   },
 };

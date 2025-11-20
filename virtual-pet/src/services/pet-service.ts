@@ -85,7 +85,7 @@ export class PetService {
       return;
     }
 
-    const tickRateMs = 1000;
+    const tickRateMs = 6000;
     let timeElapsed = 0;
 
     const intervalId = setInterval(() => {
@@ -113,13 +113,13 @@ export class PetService {
     }
   }
 
-  public toggleLightInteraction(): void {
+  public toggleLightInteraction(amountPerTick:number, durationMs: number): void {
     const needName = NeedsNames.SLEEP;
     const sleepLevel = this.needs[needName]();
 
     if (this.isLightOn()) {
       if (sleepLevel < 75) {
-        this.satisfyNeedInTime(needName, 5, 30000);
+        this.satisfyNeedInTime(needName, amountPerTick, durationMs);
       } else {
         this.playAnimation(AnimationsNames.ANGRY);
       }

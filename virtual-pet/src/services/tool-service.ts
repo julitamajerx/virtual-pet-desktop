@@ -24,11 +24,11 @@ export class ToolService {
         break;
 
       case ToolsNames.LIGHT:
-        this.petService.toggleLightInteraction();
+        this.petService.toggleLightInteraction(0.208, 60000);
         break;
 
       case ToolsNames.GAME:
-        this.petService.satisfyNeed(NeedsNames.FUN, 50);
+        this.petService.satisfyNeed(NeedsNames.FUN, 30);
         this.petService.playAnimation(AnimationsNames.FUN);
         break;
     }

@@ -38,8 +38,8 @@ export class Pet {
           this.spriteW,
           this.spriteH,
           initialConfig.frameDuration,
-          initialConfig.loop,
-        ),
+          initialConfig.loop
+        )
       );
   }
 
@@ -64,7 +64,7 @@ export class Pet {
         this.spriteW,
         this.spriteH,
         config.frameDuration,
-        config.loop,
+        config.loop
       );
 
       if (animName === AnimationsNames.SLEEP) {

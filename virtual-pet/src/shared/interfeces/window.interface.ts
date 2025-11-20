@@ -8,6 +8,9 @@ declare global {
   interface Window {
     logger: {
       save: (text: string) => void;
+    },
+    system: {
+      getProcesses: () => Promise<any[]>;
     };
   }
 }

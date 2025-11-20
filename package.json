@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "electron": "^39.2.0"
+  },
+  "dependencies": {
+    "ps-list": "^9.0.0"
   }
 }

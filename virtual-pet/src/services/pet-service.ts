@@ -1,8 +1,9 @@
-import { effect, Injectable, signal, Signal, WritableSignal } from '@angular/core';
+import { effect, inject, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { NeedConfig, NeedsMap } from '../shared/types/needs-map.type';
 import { NeedState } from '../shared/interfeces/need-state.interface';
 import { AnimationsNames } from '../shared/enums/animations-name.enum';
 import { NeedsNames } from '../shared/enums/needs-name.enum';
+import { ProcessService } from './process-service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class PetService {
   public anyNeedZero = signal(false);
   public isLightOn = signal(true);
 
+  private processService = inject(ProcessService);
   private needs: Record<string, WritableSignal<number>> = NeedsMap;
   private decayIntervals: Record<string, number> = {};
   private readonly config: Record<string, { rateMs: number; amount: number }> = NeedConfig;
@@ -24,6 +26,28 @@ export class PetService {
     effect(() => {
       const zero = Object.values(this.needs).some((level) => level() === 0);
       this.anyNeedZero.set(zero);
+    });
+
+    effect(() => {
+      const firstApp = this.processService.runningApp();
+
+      switch (firstApp) {
+        case AnimationsNames.CODE:
+          this.playAnimation(AnimationsNames.CODE);
+          break;
+        /* case AnimationsNames.VISUALSTUDIO:
+          this.playAnimation(AnimationsNames.VISUALSTUDIO);
+          break;
+        case AnimationsNames.SPOTIFY:
+          this.playAnimation(AnimationsNames.SPOTIFY);
+          break;
+        case AnimationsNames.BLENDER:
+          this.playAnimation(AnimationsNames.BLENDER);
+          break;
+        case AnimationsNames.STEAM:
+          this.playAnimation(AnimationsNames.STEAM);
+          break; */
+      }
     });
 
     effect(() => {
@@ -86,7 +110,7 @@ export class PetService {
       return;
     }
 
-    const tickRateMs = 6000;
+    const tickRateMs = 1000;
     let timeElapsed = 0;
 
     const intervalId = setInterval(() => {
@@ -114,7 +138,7 @@ export class PetService {
     }
   }
 
-  public toggleLightInteraction(amountPerTick:number, durationMs: number): void {
+  public toggleLightInteraction(amountPerTick: number, durationMs: number): void {
     const needName = NeedsNames.SLEEP;
     const sleepLevel = this.needs[needName]();
 

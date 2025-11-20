@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const psList = require('ps-list').default;
 
 let window;
 
@@ -50,6 +51,11 @@ ipcMain.on('save-log', (event, logText) => {
   const logPath = path.join(documentsPath, 'game.log');
 
   fs.appendFileSync(logPath, logText + '\n', 'utf8');
+});
+
+ipcMain.handle('get-process-list', async () => {
+  const list = await psList();
+  return list;
 });
 
 app.on('ready', createWindow);

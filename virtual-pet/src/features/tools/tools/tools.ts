@@ -22,13 +22,13 @@ export class Tools {
     effect(() => {
       const tool = this.currentToolName();
       switch (tool) {
-        case ToolsNames.food:
+        case ToolsNames.FOOD:
           this.toolImage = 'food.png';
           break;
-        case ToolsNames.light:
+        case ToolsNames.LIGHT:
           this.toolImage = 'sleep.png';
           break;
-        case ToolsNames.game:
+        case ToolsNames.GAME:
           this.toolImage = 'game.png';
           break;
         default:
@@ -37,7 +37,7 @@ export class Tools {
     });
   }
 
-  useCurrentTool() {
+  public useCurrentTool() {
     const tool = this.currentToolName();
     this.toolService.useTool(tool);
   }

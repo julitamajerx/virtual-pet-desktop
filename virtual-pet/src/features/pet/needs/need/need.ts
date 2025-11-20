@@ -10,12 +10,12 @@ import { PetService } from '../../../../services/pet-service';
 export class Need implements OnInit {
   public needType = input<string>();
   protected needSymbol: string = 'x';
+  private needsService = inject(PetService);
+
   ngOnInit(): void {
     const value = this.needType();
     this.needSymbol = value!.charAt(0).toUpperCase();
   }
-
-  private needsService = inject(PetService);
 
   currentNeedLevel = computed(() => {
     const needSignal = this.needsService.getNeedLevel(this.needType()!);

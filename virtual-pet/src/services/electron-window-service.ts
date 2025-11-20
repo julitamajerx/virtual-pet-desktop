@@ -7,7 +7,7 @@ import { ElectronWindowAPI } from '../shared/interfeces/window.interface';
 export class ElectronWindowService {
   private isElectron = !!((window as any) && (window as any).electronAPI);
 
-  public isElectronApp(): boolean {
+  private isElectronApp(): boolean {
     return this.isElectron;
   }
 

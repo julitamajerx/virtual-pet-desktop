@@ -1,7 +1,9 @@
+import { ToolsNames } from '../enums/tools-name.enum';
+
 type ToolMapType = Record<string, string>;
 
 export const ToolMap: ToolMapType = {
-  kitchen: 'food',
-  bedroom: 'light',
-  playroom: 'game'
+  kitchen: ToolsNames.FOOD,
+  bedroom: ToolsNames.LIGHT,
+  playroom: ToolsNames.GAME,
 };

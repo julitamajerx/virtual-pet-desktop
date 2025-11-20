@@ -8,7 +8,7 @@ export class RoomService {
   public readonly rooms = Rooms;
   private router = inject(Router);
 
-  setCurrentRoom(roomNumber: number) {
+  private setCurrentRoom(roomNumber: number) {
     switch (roomNumber) {
       case 0:
         this.router.navigate([this.rooms[0]]);
@@ -22,9 +22,8 @@ export class RoomService {
     }
   }
 
-  changeCurrentRoom() {
-    if (this.currentRoom() === 2
-  ) {
+  public changeCurrentRoom() {
+    if (this.currentRoom() === 2) {
       this.currentRoom.update((value) => (value = 0));
       this.setCurrentRoom(this.currentRoom());
 

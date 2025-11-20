@@ -1,14 +1,10 @@
 import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { PetService } from '../../services/pet-service';
 import { AnimationService } from '../../services/animation-service';
-
-interface AnimationConfig {
-  path: string;
-  frames: number;
-  frameDuration: number;
-  loop: boolean;
-  returnFrames?: number;
-}
+import { AnimationsNames } from '../../shared/enums/animations-name.enum';
+import { NeedsNames } from '../../shared/enums/needs-name.enum';
+import { AnimationConfig } from '../../shared/interfeces/animation-config.interface';
+import { AnimationConfigs } from '../../shared/types/animations-map.type';
 
 @Component({
   selector: 'app-pet',
@@ -26,41 +22,14 @@ export class Pet {
   private readonly spriteW = 200;
   private readonly spriteH = 200;
 
-  private readonly animationConfigs: Record<string, AnimationConfig> = {
-    idle: { path: 'assets/idle/Idle', frames: 4, frameDuration: 1000, loop: true },
-    fun: { path: 'assets/fun/Fun', frames: 1, frameDuration: 1000, loop: false, returnFrames: 2 },
-    eat: { path: 'assets/eat/Eat', frames: 4, frameDuration: 800, loop: false, returnFrames: 5 },
-    sad: { path: 'assets/sad/Sad', frames: 1, frameDuration: 800, loop: true },
-    angry: {
-      path: 'assets/angry/Angry',
-      frames: 2,
-      frameDuration: 800,
-      loop: false,
-      returnFrames: 3,
-    },
-    sleep: {
-      path: 'assets/sleep/Sleep',
-      frames: 1,
-      frameDuration: 800,
-      loop: false,
-      returnFrames: 3,
-    },
-    asleep: { path: 'assets/asleep/Asleep', frames: 0, frameDuration: 800, loop: true },
-    wakeup: {
-      path: 'assets/wakeup/Wakeup',
-      frames: 1,
-      frameDuration: 200,
-      loop: false,
-      returnFrames: 3,
-    },
-  };
+  private readonly animationConfigs: Record<string, AnimationConfig> = AnimationConfigs;
 
   ngAfterViewInit() {
     this.canvas = this.canvasRef.nativeElement;
     this.canvas.width = this.spriteW;
     this.canvas.height = this.spriteH;
 
-    const initialConfig = this.animationConfigs['idle'];
+    const initialConfig = this.animationConfigs[AnimationsNames.IDLE];
     this.animationService
       .loadImages(initialConfig.path, initialConfig.frames)
       .then(() =>
@@ -69,8 +38,8 @@ export class Pet {
           this.spriteW,
           this.spriteH,
           initialConfig.frameDuration,
-          initialConfig.loop
-        )
+          initialConfig.loop,
+        ),
       );
   }
 
@@ -95,12 +64,12 @@ export class Pet {
         this.spriteW,
         this.spriteH,
         config.frameDuration,
-        config.loop
+        config.loop,
       );
 
-      if (animName === 'sleep') {
+      if (animName === AnimationsNames.SLEEP) {
         setTimeout(() => {
-          this.handleAnimationChange('asleep');
+          this.handleAnimationChange(AnimationsNames.ASLEEP);
         }, 2000);
       }
 
@@ -108,18 +77,18 @@ export class Pet {
         const durationMs = config.returnFrames * config.frameDuration;
 
         setTimeout(() => {
-          if (animName === 'wakeup') {
-            this.petService.playAnimation('idle');
+          if (animName === AnimationsNames.WAKEUP) {
+            this.petService.playAnimation(AnimationsNames.IDLE);
           } else if (this.petService.isLightOn()) {
-            this.petService.playAnimation('idle');
+            this.petService.playAnimation(AnimationsNames.IDLE);
           }
         }, durationMs);
       }
     });
   }
 
-  pet() {
-    this.petService.satisfyNeed('fun', 5);
-    this.petService.playAnimation('fun');
+  public pet() {
+    this.petService.satisfyNeed(NeedsNames.FUN, 5);
+    this.petService.playAnimation(AnimationsNames.FUN);
   }
 }

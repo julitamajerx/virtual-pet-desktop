@@ -11,7 +11,6 @@ import { ElectronWindowService } from '../../services/electron-window-service';
 export class TopBar implements OnInit {
   protected backgroundImage = 'topbar.png';
   protected exitImage = 'exit.png';
-
   protected time = new Date();
   private intervalId: number = 0;
   private electronWindowService = inject(ElectronWindowService);
@@ -26,7 +25,7 @@ export class TopBar implements OnInit {
     Object.values(this.intervalId).forEach(clearInterval);
   }
 
-  closeApp() {
+  public closeApp() {
     this.electronWindowService.closeWindow();
   }
 }

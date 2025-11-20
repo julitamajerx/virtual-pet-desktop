@@ -10,7 +10,7 @@ export class AnimationService {
   private animationId: number | null = null;
   private isAnimating = false;
 
-  loadImages(path: string, frameCount: number): Promise<void> {
+  public loadImages(path: string, frameCount: number): Promise<void> {
     this.images = [];
     const promises: Promise<void>[] = [];
 
@@ -33,12 +33,12 @@ export class AnimationService {
     return Promise.all(promises).then(() => undefined);
   }
 
-  startAnimationLoop(
+  public startAnimationLoop(
     canvas: HTMLCanvasElement,
     spriteW: number,
     spriteH: number,
     frameDuration: number,
-    loop: boolean
+    loop: boolean,
   ) {
     if (this.isAnimating) return;
     this.isAnimating = true;
@@ -73,7 +73,7 @@ export class AnimationService {
     this.animationId = requestAnimationFrame(animate);
   }
 
-  stopAnimation() {
+  public stopAnimation() {
     this.isAnimating = false;
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
@@ -83,7 +83,7 @@ export class AnimationService {
     this.timeSinceFrameChange = 0;
   }
 
-  drawFrame(canvas: HTMLCanvasElement, spriteW: number, spriteH: number) {
+  private drawFrame(canvas: HTMLCanvasElement, spriteW: number, spriteH: number) {
     if (!canvas || this.images.length === 0) return;
 
     const ctx = canvas.getContext('2d');

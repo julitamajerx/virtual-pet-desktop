@@ -1,14 +1,14 @@
 import { effect, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { NeedConfig, NeedsMap } from '../shared/types/needs-map.type';
 import { NeedState } from '../shared/interfeces/need-state.interface';
+import { AnimationsNames } from '../shared/enums/animations-name.enum';
+import { NeedsNames } from '../shared/enums/needs-name.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PetService {
-  public currentAnimation = signal<
-    'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | 'asleep' | 'wakeup' | null
-  >('idle');
+  public currentAnimation = signal<AnimationsNames | null>(AnimationsNames.IDLE);
 
   public anyNeedZero = signal(false);
   public isLightOn = signal(true);
@@ -32,12 +32,12 @@ export class PetService {
 
       if (isSleeping) return;
 
-      if (isZero && current !== 'sad') {
-        this.playAnimation('sad');
+      if (isZero && current !== AnimationsNames.SAD) {
+        this.playAnimation(AnimationsNames.SAD);
       }
 
-      if (!isZero && current === 'sad') {
-        this.playAnimation('idle');
+      if (!isZero && current === AnimationsNames.SAD) {
+        this.playAnimation(AnimationsNames.IDLE);
       }
     });
   }
@@ -98,30 +98,30 @@ export class PetService {
         clearInterval(this.satisfactionIntervals[needName]);
         delete this.satisfactionIntervals[needName];
 
-        if (needName === 'sleep') {
+        if (needName === NeedsNames.SLEEP) {
           this.isLightOn.set(true);
-          this.playAnimation('wakeup');
+          this.playAnimation(AnimationsNames.WAKEUP);
         }
       }
     }, tickRateMs) as any;
 
     this.satisfactionIntervals[needName] = intervalId;
 
-    if (needName === 'sleep') {
+    if (needName === NeedsNames.SLEEP) {
       this.isLightOn.set(false);
-      this.playAnimation('sleep');
+      this.playAnimation(AnimationsNames.SLEEP);
     }
   }
 
   public toggleLightInteraction(): void {
-    const needName = 'sleep';
+    const needName = NeedsNames.SLEEP;
     const sleepLevel = this.needs[needName]();
 
     if (this.isLightOn()) {
       if (sleepLevel < 75) {
         this.satisfyNeedInTime(needName, 5, 30000);
       } else {
-        this.playAnimation('angry');
+        this.playAnimation(AnimationsNames.ANGRY);
       }
     } else {
       const intervalId = this.satisfactionIntervals[needName];
@@ -130,13 +130,11 @@ export class PetService {
         delete this.satisfactionIntervals[needName];
       }
       this.isLightOn.set(true);
-      this.playAnimation('wakeup');
+      this.playAnimation(AnimationsNames.WAKEUP);
     }
   }
 
-  public playAnimation(
-    name: 'idle' | 'fun' | 'eat' | 'sleep' | 'sad' | 'angry' | 'asleep' | 'wakeup'
-  ) {
+  public playAnimation(name: AnimationsNames) {
     this.currentAnimation.set(name);
   }
 

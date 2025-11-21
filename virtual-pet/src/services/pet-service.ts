@@ -40,14 +40,14 @@ export class PetService {
           case AnimationsNames.CODE:
             this.playAnimation(AnimationsNames.CODE);
             break;
+          case AnimationsNames.BLENDER:
+            this.playAnimation(AnimationsNames.BLENDER);
+            break;
           /* case AnimationsNames.VISUALSTUDIO:
           this.playAnimation(AnimationsNames.VISUALSTUDIO);
           break;
         case AnimationsNames.SPOTIFY:
           this.playAnimation(AnimationsNames.SPOTIFY);
-          break;
-        case AnimationsNames.BLENDER:
-          this.playAnimation(AnimationsNames.BLENDER);
           break;
         case AnimationsNames.STEAM:
           this.playAnimation(AnimationsNames.STEAM);
@@ -124,7 +124,7 @@ export class PetService {
   }
 
   public satisfyNeed(needName: string, amount: number) {
-    if(!this.isLightOn()) return;
+    if (!this.isLightOn()) return;
     const needSignal = this.needs[needName];
     if (!needSignal) return;
 

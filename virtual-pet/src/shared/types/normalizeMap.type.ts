@@ -18,6 +18,7 @@ export const normalizeMap: NormalizeMapType = {
     // Blender
     'blender': 'blender',
     'blender.exe': 'blender',
+    'blender-launcher.exe': 'blender'
 
     // Steam
     /*'steam': 'steam',

@@ -7,7 +7,7 @@ export const AnimationConfigs: AnimationConfigType = {
   code: { path: 'assets/code/Code', frames: 3, frameDuration: 1000, loop: true },
   visualstudio: { path: 'assets/code/Code', frames: 3, frameDuration: 1000, loop: true },
   spotify: { path: 'assets/spotify/Spotify', frames: 3, frameDuration: 1000, loop: true },
-  bledner: { path: 'assets/blender/Bledner', frames: 7, frameDuration: 1000, loop: true },
+  blender: { path: 'assets/blender/Blender', frames: 7, frameDuration: 1000, loop: true },
   steam: { path: 'assets/steam/Steam', frames: 3, frameDuration: 1000, loop: true },
   fun: { path: 'assets/fun/Fun', frames: 1, frameDuration: 1000, loop: false, returnFrames: 2 },
   eat: { path: 'assets/eat/Eat', frames: 4, frameDuration: 800, loop: false, returnFrames: 5 },

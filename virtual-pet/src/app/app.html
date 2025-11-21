@@ -1,6 +1,11 @@
-<div class="game-container" [class.dark-overlay]="isLightOff()" [style.backgroundImage]="'url(' + backgroundImage + ')'">
+<div
+  class="game-container"
+  [class.dark-overlay]="isLightOff()"
+  [style.backgroundImage]="'url(' + backgroundImage + ')'"
+>
   <app-top-bar></app-top-bar>
   <div class="game-wrapper">
+    <app-pet-name></app-pet-name>
     <router-outlet></router-outlet>
     <div class="needs">
       <app-need needType="hunger"></app-need>

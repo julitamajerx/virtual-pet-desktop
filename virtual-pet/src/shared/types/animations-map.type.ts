@@ -26,12 +26,12 @@ export const AnimationConfigs: AnimationConfigType = {
     loop: false,
     returnFrames: 3,
   },
-  asleep: { path: 'assets/asleep/Asleep', frames: 0, frameDuration: 800, loop: true },
+  asleep: { path: 'assets/asleep/Asleep', frames: 1, frameDuration: 800, loop: true },
   wakeup: {
     path: 'assets/wakeup/Wakeup',
     frames: 1,
     frameDuration: 200,
     loop: false,
-    returnFrames: 3,
+    returnFrames: 1,
   },
 };

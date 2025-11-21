@@ -9,10 +9,11 @@ import { Need } from '../features/pet/needs/need/need';
 import { PetService } from '../services/pet-service';
 import { LoggerService } from '../services/logger-service';
 import { ProcessService } from '../services/process-service';
+import { PetName } from '../features/pet/pet-name/pet-name';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TopBar, BottomBar, Pet, Room, Tools, Need],
+  imports: [RouterOutlet, TopBar, BottomBar, Pet, Room, Tools, Need, PetName],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -27,19 +28,19 @@ export class App implements OnInit, OnDestroy {
   protected backgroundImage = 'background.png';
 
   async ngOnInit() {
-    this.loggerService.log('App started.');
+  this.loggerService.log('App started.');
 
-    this.processWorker = new Worker(
-      new URL('../workers/process-worker.worker.ts', import.meta.url),
-      { type: 'module' }
-    );
+  this.processWorker = new Worker(
+    new URL('../workers/process-worker.worker.ts', import.meta.url),
+    { type: 'module' }
+  );
 
-    this.processWorker.onmessage = async (event) => {
-      if (event.data.action === 'check-processes') {
+  this.processWorker.onmessage = async (event) => {
+    if (event.data.action === 'check-processes') {
         await this.processService.setRunningApp();
-      }
-    };
-  }
+    }
+  };
+}
 
   ngOnDestroy() {
     if (this.processWorker) {

@@ -24,7 +24,7 @@ export class ToolService {
         break;
 
       case ToolsNames.LIGHT:
-        this.petService.toggleLightInteraction(0.208, 60000);
+        this.petService.toggleLightInteraction(0.00463, 21600000);
         break;
 
       case ToolsNames.GAME:

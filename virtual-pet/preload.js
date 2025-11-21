@@ -11,3 +11,8 @@ contextBridge.exposeInMainWorld('logger', {
 contextBridge.exposeInMainWorld('system', {
   getProcesses: () => ipcRenderer.invoke('get-process-list')
 });
+
+contextBridge.exposeInMainWorld("petStorage", {
+  getName: () => ipcRenderer.invoke("getPetName"),
+  setName: (name) => ipcRenderer.invoke("setPetName", name)
+});

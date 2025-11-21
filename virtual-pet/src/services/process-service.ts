@@ -32,7 +32,7 @@ export class ProcessService {
     
 
     if (apps.length > 0) {
-      const normalized = this.normalize(apps[0].name);
+      const normalized = this.normalize(apps[0].name)
       this.runningApp.set(null);
 
       this.runningApp.set(normalized);

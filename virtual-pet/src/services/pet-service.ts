@@ -33,13 +33,14 @@ export class PetService {
     });
 
     effect(() => {
-      const firstApp = this.processService.runningApp();
+      if (this.isLightOn() === true) {
+        const firstApp = this.processService.runningApp();
 
-      switch (firstApp) {
-        case AnimationsNames.CODE:
-          this.playAnimation(AnimationsNames.CODE);
-          break;
-        /* case AnimationsNames.VISUALSTUDIO:
+        switch (firstApp) {
+          case AnimationsNames.CODE:
+            this.playAnimation(AnimationsNames.CODE);
+            break;
+          /* case AnimationsNames.VISUALSTUDIO:
           this.playAnimation(AnimationsNames.VISUALSTUDIO);
           break;
         case AnimationsNames.SPOTIFY:
@@ -51,6 +52,7 @@ export class PetService {
         case AnimationsNames.STEAM:
           this.playAnimation(AnimationsNames.STEAM);
           break; */
+        }
       }
     });
 
@@ -187,6 +189,9 @@ export class PetService {
   }
 
   public playAnimation(name: AnimationsNames) {
+    if (!this.isLightOn() && name !== AnimationsNames.SLEEP && name !== AnimationsNames.ASLEEP) {
+      return;
+    }
     this.currentAnimation.set(name);
   }
 

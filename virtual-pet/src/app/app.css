@@ -14,6 +14,14 @@ app-pet {
   z-index: 11;
 }
 
+app-pet-name {
+  position: absolute;
+  bottom: 205px;
+  right: 0;
+  margin-right: 5px;
+  z-index: 14;
+}
+
 app-room {
   position: absolute;
   width: 100%;
@@ -42,7 +50,6 @@ app-tools {
 }
 
 .dark-overlay {
-
   opacity: 0.5;
   z-index: 100;
 }

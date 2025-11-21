@@ -1,8 +1,23 @@
 {
   "devDependencies": {
-    "electron": "^39.2.0"
+    "electron": "^39.2.0",
+    "electron-builder": "..." 
   },
   "dependencies": {
-    "ps-list": "^9.0.0"
+    "ps-list": "^9.0.0",
+    "electron-store": "^8.2.0" 
+  },
+  "build": {
+
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      
+      "app-build/**/*", 
+      
+      "assets/**/*",
+      "node_modules/**/*"
+    ]
   }
 }

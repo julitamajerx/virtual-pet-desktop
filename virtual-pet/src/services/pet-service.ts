@@ -117,13 +117,14 @@ export class PetService {
       case NeedsNames.FUN:
         return timeOfDay === 'morning' ? 90 : timeOfDay === 'evening' ? 40 : 70;
       case NeedsNames.SLEEP:
-        return timeOfDay === 'night' ? 20 : 100;
+        return timeOfDay === 'night' ? 20 : 20;
       default:
         return 100;
     }
   }
 
   public satisfyNeed(needName: string, amount: number) {
+    if(!this.isLightOn()) return;
     const needSignal = this.needs[needName];
     if (!needSignal) return;
 

@@ -12,16 +12,16 @@ export const normalizeMap: NormalizeMapType = {
     'devenv.exe': 'visual-studio',
 
     // Spotify
-    'spotify': 'spotify',
-    'spotify.exe': 'spotify',
+    /*'spotify': 'spotify',
+    'spotify.exe': 'spotify',*/
 
     // Blender
     'blender': 'blender',
     'blender.exe': 'blender',
 
     // Steam
-    'steam': 'steam',
+    /*'steam': 'steam',
     'steam.exe': 'steam',
     'steamwebhelper': 'steam',
-    'steam_osx': 'steam',
+    'steam_osx': 'steam',*/
   };

@@ -14,6 +14,11 @@ export class PetName {
 
   updateName(event: Event) {
     const input = event.target as HTMLInputElement;
+
+    if (input.value.length > 15) {
+      input.value = input.value.slice(0, 15);
+    }
+
     this.petNameService.saveName(input.value);
   }
 }
